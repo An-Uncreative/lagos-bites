@@ -2,6 +2,11 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCart, saveCart, cartTotals, clearCart } from "../utils/cart";
 
+/**
+ * Shopping cart page. Renders current items in a table with controls
+ * to adjust quantities or remove entries. Summarises subtotal,
+ * delivery and total and provides navigation to checkout.
+ */
 export default function Cart() {
   const [items, setItems] = useState(getCart());
   const nav = useNavigate();
@@ -23,116 +28,103 @@ export default function Cart() {
   }
 
   return (
-    <div style={{ padding: 40 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 12,
-          flexWrap: "wrap",
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Cart</h1>
-        <div style={{ display: "flex", gap: 10 }}>
-          <Link to="/">Menu</Link>
-          <Link to="/checkout">Checkout</Link>
+    <main className="section">
+      <div className="container">
+        <div className="section-title">
+          <h2>Your Cart</h2>
+          <div className="nav-links">
+            <Link to="/menu">Back to menu</Link>
+            {items.length > 0 && <Link to="/checkout">Checkout</Link>}
+          </div>
         </div>
-      </div>
 
-      {items.length === 0 ? (
-        <p>
-          Your cart is empty. <Link to="/">Go to menu</Link>
-        </p>
-      ) : (
-        <>
-          <div style={{ marginTop: 18 }}>
-            {items.map((it) => (
+        {items.length === 0 ? (
+          <p>Your cart is empty. Add some delicious meals!</p>
+        ) : (
+          <>
+            <div style={{ overflowX: "auto" }}>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th style={{ width: "40%" }}>Meal</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((it) => {
+                    const sub = it.price * it.qty;
+                    return (
+                      <tr key={it.mealId}>
+                        <td>{it.name}</td>
+                        <td>
+                          <input
+                            type="number"
+                            min="1"
+                            value={it.qty}
+                            onChange={(e) =>
+                              updateQty(it.mealId, Number(e.target.value))
+                            }
+                            style={{ width: 72 }}
+                          />
+                        </td>
+                        <td>₦{it.price.toLocaleString("en-NG")}</td>
+                        <td>₦{sub.toLocaleString("en-NG")}</td>
+                        <td>
+                          <button
+                            className="btn"
+                            onClick={() => removeItem(it.mealId)}
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="card" style={{ marginTop: 32, maxWidth: 400 }}>
+              <div className="row">
+                <span className="small">Subtotal</span>
+                <b>₦{totals.subtotal.toLocaleString("en-NG")}</b>
+              </div>
+              <div className="row" style={{ marginTop: 8 }}>
+                <span className="small">Delivery</span>
+                <b>₦{totals.delivery.toLocaleString("en-NG")}</b>
+              </div>
+              <hr style={{ borderColor: "var(--line)", margin: "12px 0" }} />
+              <div className="row">
+                <span>Total</span>
+                <b>₦{totals.total.toLocaleString("en-NG")}</b>
+              </div>
               <div
-                key={it.mealId}
-                style={{
-                  padding: 14,
-                  border: "1px solid #ddd",
-                  borderRadius: 10,
-                  marginBottom: 12,
-                }}
+                className="row"
+                style={{ marginTop: 16, gap: 14, flexWrap: "wrap" }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    flexWrap: "wrap",
+                <button
+                  className="btn"
+                  onClick={() => {
+                    clearCart();
+                    setItems([]);
                   }}
                 >
-                  <div>
-                    <div style={{ fontWeight: 800 }}>{it.name}</div>
-                    <div style={{ color: "#666" }}>
-                      ₦{it.price.toLocaleString("en-NG")}
-                    </div>
-                  </div>
-
-                  <div
-                    style={{ display: "flex", gap: 10, alignItems: "center" }}
-                  >
-                    <input
-                      type="number"
-                      min="1"
-                      value={it.qty}
-                      onChange={(e) =>
-                        updateQty(it.mealId, Number(e.target.value))
-                      }
-                      style={{ width: 80, padding: 8 }}
-                    />
-                    <button onClick={() => removeItem(it.mealId)}>
-                      Remove
-                    </button>
-                  </div>
-                </div>
+                  Clear cart
+                </button>
+                <button
+                  className="btn primary"
+                  onClick={() => nav("/checkout")}
+                >
+                  Proceed to checkout
+                </button>
               </div>
-            ))}
-          </div>
-
-          <div
-            style={{
-              marginTop: 18,
-              padding: 14,
-              border: "1px solid #ddd",
-              borderRadius: 10,
-            }}
-          >
-            <div>
-              Subtotal: <b>₦{totals.subtotal.toLocaleString("en-NG")}</b>
             </div>
-            <div>
-              Delivery: <b>₦{totals.delivery.toLocaleString("en-NG")}</b>
-            </div>
-            <div>
-              Total: <b>₦{totals.total.toLocaleString("en-NG")}</b>
-            </div>
-
-            <div
-              style={{
-                marginTop: 12,
-                display: "flex",
-                gap: 10,
-                flexWrap: "wrap",
-              }}
-            >
-              <button
-                onClick={() => {
-                  clearCart();
-                  setItems([]);
-                }}
-              >
-                Clear cart
-              </button>
-              <button onClick={() => nav("/checkout")}>
-                Proceed to checkout
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </main>
   );
 }

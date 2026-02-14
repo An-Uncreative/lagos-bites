@@ -1,35 +1,46 @@
 import { Link, useSearchParams } from "react-router-dom";
 
+/**
+ * Success page displayed after a successful payment verification. Shows
+ * order identifiers and provides quick links back to the menu or cart.
+ */
 export default function Success() {
   const [params] = useSearchParams();
   const ref = params.get("ref");
   const orderId = params.get("orderId");
-
   return (
-    <div style={{ padding: 40 }}>
-      <h1>Order Successful ✅</h1>
-      <p>This order was verified server-side using Paystack.</p>
-
-      <div
-        style={{
-          padding: 14,
-          border: "1px solid #ddd",
-          borderRadius: 10,
-          maxWidth: 640,
-        }}
-      >
-        <div>
-          <b>Order ID:</b> {orderId || "—"}
+    <main className="section">
+      <div className="container" style={{ textAlign: "center" }}>
+        <h2 className="h2">Order Successful ✅</h2>
+        <p className="p">
+          Your payment has been verified server-side using Paystack. Thank you
+          for ordering from Lagos Bites!
+        </p>
+        <div
+          className="card"
+          style={{ maxWidth: 540, margin: "0 auto", marginTop: 24 }}
+        >
+          <div className="row" style={{ marginBottom: 8 }}>
+            <strong>Order ID:</strong>
+            <span>{orderId || "—"}</span>
+          </div>
+          <div className="row">
+            <strong>Paystack Reference:</strong>
+            <span>{ref || "—"}</span>
+          </div>
         </div>
-        <div>
-          <b>Paystack Reference:</b> {ref || "—"}
+        <div
+          className="hero-actions"
+          style={{ justifyContent: "center", marginTop: 24 }}
+        >
+          <Link to="/menu" className="btn primary">
+            Back to menu
+          </Link>
+          <Link to="/cart" className="btn">
+            View cart
+          </Link>
         </div>
       </div>
-
-      <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
-        <Link to="/">Back to menu</Link>
-        <Link to="/cart">Cart</Link>
-      </div>
-    </div>
+    </main>
   );
 }

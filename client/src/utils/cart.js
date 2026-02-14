@@ -1,3 +1,7 @@
+// Lightweight cart utilities. The cart is persisted in localStorage
+// under a stable key. Each item in the cart has the shape
+// { mealId, name, price, qty }.
+
 const CART_KEY = "lagos_bites_cart_v2";
 
 export function getCart() {

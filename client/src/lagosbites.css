@@ -84,6 +84,7 @@ img{ max-width:100%; display:block; }
   background: transparent;
   color: var(--text);
   cursor:pointer;
+  transition: border-color .15s, background-color .15s, filter .15s;
 }
 .btn:hover{ border-color: rgba(255,255,255,.22); }
 .btn.primary{
@@ -107,11 +108,22 @@ img{ max-width:100%; display:block; }
   color: var(--muted);
   font-size: 13px;
   margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
 }
 .h1{
   font-size: clamp(34px, 5vw, 56px);
   line-height: 1.08;
   margin: 0 0 14px;
+}
+.h2{
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+.h3{
+  font-size: 20px;
+  margin: 0 0 8px;
 }
 .p{
   color: var(--muted);
@@ -195,7 +207,7 @@ img{ max-width:100%; display:block; }
 }
 .small{ color: var(--muted); font-size: 13px; }
 
-.input, textarea{
+input, textarea{
   width:100%;
   padding: 12px;
   border-radius: 12px;
@@ -222,6 +234,7 @@ textarea{ min-height: 120px; resize: vertical; }
   padding: 24px 0;
   color: var(--muted);
   font-size: 13px;
+  margin-top: 64px;
 }
 
 .notice{

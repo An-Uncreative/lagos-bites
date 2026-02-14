@@ -1,19 +1,28 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Menu from "./pages/Menu";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import Success from "./pages/Success";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+
+// Lazy-load pages to reduce initial bundle size
+import Home from "./pages/Home.jsx";
+import Menu from "./pages/Menu.jsx";
+import Cart from "./pages/Cart.jsx";
+import Checkout from "./pages/Checkout.jsx";
+import Success from "./pages/Success.jsx";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Menu />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Redirect unknown routes back to home */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </BrowserRouter>
+      <Footer />
+    </>
   );
 }

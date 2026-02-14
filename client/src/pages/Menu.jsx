@@ -1,100 +1,94 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../api/api";
-import { addToCart } from "../utils/cart";
-import { Link } from "react-router-dom";
+import MealCard from "../components/MealCard.jsx";
 
+/**
+ * Menu page. Fetches meals from the backend and allows visitors to
+ * search and filter by category. Displays results in a responsive grid.
+ */
 export default function Menu() {
   const [meals, setMeals] = useState([]);
-  const [q, setQ] = useState("");
+  const [query, setQuery] = useState("");
+  const [activeCat, setActiveCat] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     api
       .getMeals()
-      .then((res) => setMeals(res.data))
-      .catch(console.error);
+      .then((res) => {
+        setMeals(res.data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message || "Failed to load meals");
+        setLoading(false);
+      });
   }, []);
 
-  const filtered = meals.filter((m) =>
-    (m.name + " " + m.category).toLowerCase().includes(q.toLowerCase()),
-  );
+  // Derive a sorted list of unique categories. Always include "All".
+  const categories = useMemo(() => {
+    const cats = new Set();
+    meals.forEach((m) => {
+      if (m.category) cats.add(m.category);
+    });
+    return ["All", ...Array.from(cats).sort()];
+  }, [meals]);
+
+  // Filter meals based on search query and active category.
+  const filtered = meals.filter((meal) => {
+    const matchesQ = (meal.name + " " + meal.category)
+      .toLowerCase()
+      .includes(query.toLowerCase());
+    const matchesCat = activeCat === "All" || meal.category === activeCat;
+    return matchesQ && matchesCat;
+  });
 
   return (
-    <div style={{ padding: 40 }}>
-      <div
-        style={{
-          padding: "48px 0",
-          textAlign: "center",
-        }}
-      >
-        <h1 className="h1">Lagos Bites</h1>
-        <p className="muted" style={{ marginTop: 12 }}>
-          Fresh meals delivered fast.
-        </p>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 12,
-          flexWrap: "wrap",
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Menu</h1>
-        <div style={{ display: "flex", gap: 10 }}>
-          <Link to="/cart">Cart</Link>
-          <Link to="/checkout">Checkout</Link>
+    <main className="section">
+      <div className="container">
+        {/* Header */}
+        <div className="section-title">
+          <h2>Our Menu</h2>
+          <p>Select from a variety of dishes below or use the search box.</p>
         </div>
-      </div>
 
-      <p style={{ color: "#555" }}>Browse meals from MongoDB Atlas.</p>
-
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Search meals..."
-        style={{ padding: 10, width: "min(520px, 100%)", marginBottom: 20 }}
-      />
-
-      {filtered.map((meal) => (
-        <div
-          key={meal._id}
-          style={{
-            padding: 14,
-            border: "1px solid #ddd",
-            borderRadius: 10,
-            marginBottom: 12,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-            }}
-          >
-            <div>
-              <h3 style={{ margin: "0 0 6px" }}>{meal.name}</h3>
-              <div style={{ color: "#666", fontSize: 14 }}>{meal.category}</div>
-              <div style={{ marginTop: 8, fontWeight: 800 }}>
-                ₦{meal.price.toLocaleString("en-NG")}
-              </div>
-            </div>
-
-            <button
-              onClick={() =>
-                addToCart({
-                  mealId: meal._id,
-                  name: meal.name,
-                  price: meal.price,
-                })
-              }
-              style={{ height: 44 }}
+        {/* Search & category filter */}
+        <input
+          type="text"
+          placeholder="Search meals..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{ maxWidth: "420px" }}
+        />
+        <div className="pills">
+          {categories.map((cat) => (
+            <div
+              key={cat}
+              className={"pill" + (activeCat === cat ? " active" : "")}
+              onClick={() => setActiveCat(cat)}
             >
-              Add to cart
-            </button>
-          </div>
+              {cat}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+
+        {/* Meals grid */}
+        {loading ? (
+          <p style={{ marginTop: 32 }}>Loading meals...</p>
+        ) : error ? (
+          <p style={{ marginTop: 32, color: "#f87171" }}>{error}</p>
+        ) : filtered.length === 0 ? (
+          <p style={{ marginTop: 32 }}>No meals match your search.</p>
+        ) : (
+          <div className="grid cols-3" style={{ marginTop: 32 }}>
+            {filtered.map((meal) => (
+              <MealCard key={meal._id} meal={meal} />
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
