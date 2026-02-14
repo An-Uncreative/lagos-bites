@@ -8,13 +8,25 @@ import { ordersRouter } from "./routes/orders.routes.js";
 import { paymentRouter } from "./routes/payment.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { dirname } from "path";
 
 export function createApp() {
   const app = express();
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
-  app.use(helmet());
+  // Configure Helmet with relaxed CSP for images
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          "img-src": ["'self'", "data:", "blob:", "*"],
+        },
+      },
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+    }),
+  );
+
   app.use(cors({ origin: env.clientOrigin, credentials: true }));
 
   // MODIFIED: Added verify callback to capture the raw body for Paystack
@@ -36,11 +48,13 @@ export function createApp() {
   app.use("/api/orders", ordersRouter);
   app.use("/api/payments", paymentRouter);
 
+  // Serve static images with proper CORS headers
   app.use(
     "/images",
     express.static(path.join(__dirname, "../public/images"), {
       setHeaders: (res) => {
         res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
       },
     }),
   );
