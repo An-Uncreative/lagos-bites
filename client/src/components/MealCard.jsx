@@ -9,7 +9,7 @@ import { addToCart } from "../utils/cart";
  * based on the meal name. If you prefer to supply your own images,
  * pass an `image` prop or adjust the src below accordingly.
  */
-export default function MealCard({ meal }) {
+export default function MealCard({ meal, onAdd }) {
   const { _id, name, category, price, imageUrl } = meal;
 
   /*
@@ -34,9 +34,22 @@ export default function MealCard({ meal }) {
       <p className="small">{category}</p>
       <div className="row" style={{ marginTop: 8 }}>
         <div className="price">₦{price.toLocaleString("en-NG")}</div>
-        <button
+        {/* <button
           className="btn primary"
           onClick={() => addToCart({ mealId: _id, name, price: Number(price) })}
+        >
+          Add to cart
+        </button> */}
+        <button
+          className="btn primary"
+          onClick={() => {
+            // Add to cart
+            addToCart({ mealId: _id, name, price: Number(price) });
+            // Trigger a callback if provided
+            if (typeof onAdd === "function") {
+              onAdd(meal);
+            }
+          }}
         >
           Add to cart
         </button>

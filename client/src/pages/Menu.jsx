@@ -13,6 +13,19 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+// Toast state to show feedback when items are added
+  const [toast, setToast] = useState({ message: "", visible: false });
+
+  // Hide the toast automatically after 3 seconds whenever it’s shown
+  useEffect(() => {
+    if (toast.visible) {
+      const timer = setTimeout(() => {
+        setToast((t) => ({ ...t, visible: false }));
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast.visible]);
+
   useEffect(() => {
     api
       .getMeals()
@@ -83,11 +96,29 @@ export default function Menu() {
           <p style={{ marginTop: 32 }}>No meals match your search.</p>
         ) : (
           <div className="grid cols-3" style={{ marginTop: 32 }}>
-            {filtered.map((meal) => (
+            {/* {filtered.map((meal) => (
               <MealCard key={meal._id} meal={meal} />
-            ))}
+            ))} */}
+            {filtered.map((meal) => (
+             <MealCard
+               key={meal._id}
+               meal={meal}
+               // When an item is added, show a toast
+               onAdd={(m) =>
+                 setToast({
+                   message: `${m.name} added to cart successfully`,
+                   visible: true,
+                 })
+               }
+             />
+           ))}
           </div>
         )}
+         {/* Render the toast notification */}
+        {toast.visible && (
+          <div className="toast">{toast.message}</div>
+        )}
+
       </div>
     </main>
   );

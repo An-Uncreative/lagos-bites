@@ -9,6 +9,7 @@ import { getCart } from "../utils/cart";
 export default function Navbar() {
   const location = useLocation();
   const [count, setCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Recompute cart count whenever the location changes or on storage events.
   useEffect(() => {
@@ -25,7 +26,8 @@ export default function Navbar() {
   }, [location]);
 
   return (
-    <nav className="nav">
+    <>
+    {/* <nav className="nav">
       <div className="container nav-inner">
         <Link className="brand" to="/">
           Lagos<span>Bites</span>
@@ -39,6 +41,30 @@ export default function Navbar() {
           <Link to="/checkout">Checkout</Link>
         </div>
       </div>
+    </nav> */}
+    <nav className="nav">
+      <div className="container nav-inner">
+        <Link className="brand" to="/">
+          Lagos<span>Bites</span>
+        </Link>
+        {/* Mobile toggle for nav links */}
+        <button
+          className={`nav-toggle${menuOpen ? " open" : ""}`}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          <span className="hamburger" aria-hidden="true"></span>
+        </button>
+        <div className={`nav-links${menuOpen ? " open" : ""}`}>
+          <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+          <Link to="/menu" onClick={() => setMenuOpen(false)}>Menu</Link>
+          <Link to="/cart" onClick={() => setMenuOpen(false)}>
+            Cart{count > 0 && <span className="badge">{count}</span>}
+          </Link>
+          <Link to="/checkout" onClick={() => setMenuOpen(false)}>Checkout</Link>
+        </div>
+      </div>
     </nav>
+    </>
   );
 }
