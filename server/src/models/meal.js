@@ -40,4 +40,6 @@ const mealSchema = new mongoose.Schema(
 
 mealSchema.index({ category: 1, price: 1 });
 
-export const Meal = mongoose.model("Meal", mealSchema);
+const Meal = mongoose.models.Meal || mongoose.model("Meal", mealSchema);
+
+export { Meal };

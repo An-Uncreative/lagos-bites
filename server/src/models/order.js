@@ -38,4 +38,7 @@ const OrderSchema = new mongoose.Schema(
 
 OrderSchema.index({ "payment.reference": 1 }, { unique: true, sparse: true });
 
-export const Order = mongoose.model("Order", OrderSchema);
+const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
+
+export { Order };
+

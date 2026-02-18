@@ -1,4 +1,4 @@
-import { Meal } from "../models/Meal.js";
+import { Meal } from "../models/meal.js";
 import { ok } from "../utils/respond.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
