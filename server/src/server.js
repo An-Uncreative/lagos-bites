@@ -6,7 +6,7 @@ async function start() {
   await connectDB();
   const app = createApp();
   app.listen(env.port, () => {
-    console.log(`✅ Server running on http://localhost:${env.port}`);
+    console.log(`✅ Server running on port ${env.port}`);
   });
 }
 

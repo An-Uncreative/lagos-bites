@@ -27,7 +27,7 @@ export function createApp() {
     }),
   );
 
-  app.use(cors({ origin: env.clientOrigin, credentials: true }));
+  app.use(cors({ origin: env.clientOrigin || "*", credentials: true }));
 
   // MODIFIED: Added verify callback to capture the raw body for Paystack
   app.use(
