@@ -132,7 +132,7 @@ export default function Checkout() {
             {error}
           </div>
         )}
-        <div className="grid cols-2" style={{ marginTop: 32 }}>
+        <div className="grid cols-2 checkout-grid" style={{ marginTop: 32 }}>
           {/* Delivery details */}
           <div className="card">
             <h3 className="h3">Delivery details</h3>

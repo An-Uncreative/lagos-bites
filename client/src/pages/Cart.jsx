@@ -76,8 +76,9 @@ export default function Cart() {
                           <button
                             className="btn"
                             onClick={() => removeItem(it.mealId)}
+                            aria-label="Remove item"
                           >
-                            Remove
+                            🗑️
                           </button>
                         </td>
                       </tr>

@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="section hero">
+      <section className="section hero home-hero">
         <div className="container grid cols-2" style={{ alignItems: "center" }}>
           <div>
             <div className="kicker">Discover Lagos flavours</div>
@@ -128,7 +128,7 @@ export default function Home() {
           ) : error ? (
             <p style={{ color: "#f87171" }}>{error}</p>
           ) : (
-            <div className="grid cols-3" style={{ marginTop: 20 }}>
+            <div className="grid cols-3 popular-grid" style={{ marginTop: 20 }}>
               {picks.map((meal) => {
                 const imgSrc = meal.imageUrl
                   ? `${import.meta.env.VITE_API_BASE_URL}${meal.imageUrl}`

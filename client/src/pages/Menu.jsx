@@ -95,7 +95,7 @@ export default function Menu() {
         ) : filtered.length === 0 ? (
           <p style={{ marginTop: 32 }}>No meals match your search.</p>
         ) : (
-          <div className="grid cols-3" style={{ marginTop: 32 }}>
+          <div className="grid cols-3 menu-grid" style={{ marginTop: 32 }}>
             {/* {filtered.map((meal) => (
               <MealCard key={meal._id} meal={meal} />
             ))} */}
