@@ -1,5 +1,5 @@
 
-Lagos Bites — Fullstack Restaurant Ordering System
+# Lagos Bites — Fullstack Restaurant Ordering System
 
 A production-ready restaurant ordering system built with the MERN stack and integrated with Paystack for secure payment processing.
 
@@ -22,17 +22,6 @@ The system demonstrates:
 - Environment-based configuration management
 
 This project was built to simulate a real-world restaurant ordering workflow with proper architectural and security considerations.
-
-## Problem
-
-Many small restaurants rely on manual order collection through WhatsApp or phone calls. This leads to:
-
-- Order miscommunication
-- Manual payment confirmation
-- No centralized tracking
-- Poor user experience
-
-Lagos Bites provides a structured ordering system with secure online payments and server-side verification to eliminate these issues.
 
 ## Core Features
 ### Customer Experience
