@@ -80,7 +80,6 @@ export default function AdminDashboard() {
           <button
             onClick={logout}
             style={{
-              background: "#fff",
               color: "#111",
               border: "1px solid #ddd",
             }}
@@ -94,7 +93,6 @@ export default function AdminDashboard() {
         <div
           style={{
             marginTop: 16,
-            background: "#fff1f1",
             border: "1px solid #ffb4b4",
             padding: 12,
             borderRadius: 10,
@@ -122,7 +120,6 @@ export default function AdminDashboard() {
                 border: "1px solid #eee",
                 borderRadius: 12,
                 padding: 14,
-                background: "#fff",
               }}
             >
               <div style={{ color: "#666", fontSize: 13 }}>Total Orders</div>
@@ -136,7 +133,6 @@ export default function AdminDashboard() {
                 border: "1px solid #eee",
                 borderRadius: 12,
                 padding: 14,
-                background: "#fff",
               }}
             >
               <div style={{ color: "#666", fontSize: 13 }}>Paid Orders</div>
@@ -150,7 +146,6 @@ export default function AdminDashboard() {
                 border: "1px solid #eee",
                 borderRadius: 12,
                 padding: 14,
-                background: "#fff",
               }}
             >
               <div style={{ color: "#666", fontSize: 13 }}>
@@ -166,7 +161,6 @@ export default function AdminDashboard() {
           <div
             style={{
               marginTop: 18,
-              background: "#fff",
               border: "1px solid #eee",
               borderRadius: 12,
               overflow: "hidden",
@@ -185,7 +179,7 @@ export default function AdminDashboard() {
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ textAlign: "left", background: "#fafafa" }}>
+                  <tr style={{ textAlign: "left" }}>
                     <th style={{ padding: 12, borderBottom: "1px solid #eee" }}>
                       Date
                     </th>
@@ -244,8 +238,8 @@ export default function AdminDashboard() {
                             border: "1px solid #eee",
                             background:
                               o.payment?.status === "paid"
-                                ? "#ecfdf5"
-                                : "#fff7ed",
+                                ? "#53a83d"
+                                : "#b06f20",
                           }}
                         >
                           {o.payment?.status || "pending"}
