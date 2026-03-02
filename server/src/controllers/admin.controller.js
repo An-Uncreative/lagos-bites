@@ -1,9 +1,10 @@
 import { Order } from "../models/order.js";
+import { ok } from "../utils/respond.js";
 
 export async function getAllOrdersAdmin(req, res) {
   const orders = await Order.find({}).sort({ createdAt: -1 }).lean();
 
-  return res.json({ ok: true, data: orders });
+  return ok(res, orders);
 }
 
 export async function getAdminMetrics(req, res) {
@@ -21,12 +22,9 @@ export async function getAdminMetrics(req, res) {
 
   const totalRevenue = revenueAgg?.[0]?.revenue || 0;
 
-  return res.json({
-    ok: true,
-    data: {
-      totalOrders,
-      paidOrders,
-      totalRevenue,
-    },
+  return ok(res, {
+    totalOrders,
+    paidOrders,
+    totalRevenue,
   });
 }

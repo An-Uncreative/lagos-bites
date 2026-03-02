@@ -5,6 +5,7 @@ import {
   nairaToKobo,
   isValidPaystackSignature,
 } from "../services/paystack.services.js";
+import { ok } from "../utils/respond.js";
 
 /**
  * POST /api/payments/paystack/initialize/:orderId
@@ -18,7 +19,7 @@ export async function initPaystackForOrder(req, res) {
     return res.status(404).json({ ok: false, message: "Order not found" });
 
   if (order.payment.status === "paid") {
-    return res.json({ ok: true, message: "Order already paid", order });
+    return ok(res, order, null, "Order already paid");
   }
 
   // Ensure we have a reference on the order (generated once and reused)
