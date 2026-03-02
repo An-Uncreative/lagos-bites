@@ -7,13 +7,17 @@
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
+function getToken() {
+  return localStorage.getItem("lb_admin_token");
+}
+
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
     ...options,
   });
 
-  const data = await res.json();
+  const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
     const msg = data?.message || `Request failed (${res.status})`;
@@ -40,15 +44,29 @@ export const api = {
 
   // Create a new order. Expects an object with customer and items fields.
   createOrder: (payload) =>
-    request("/api/orders", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
-
-  // Verify a completed Paystack payment. Accepts { reference, orderId }.
+    request("/api/orders", { method: "POST", body: JSON.stringify(payload) }),
   verifyPayment: (payload) =>
     request("/api/payments/paystack/verify", {
       method: "POST",
       body: JSON.stringify(payload),
+    }),
+
+  // ✅ NEW: admin auth + admin data
+  adminLogin: ({ email, password }) =>
+    request("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    }),
+
+  adminGetOrders: () =>
+    request("/api/admin/orders", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${getToken()}` },
+    }),
+
+  adminGetMetrics: () =>
+    request("/api/admin/metrics", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${getToken()}` },
     }),
 };

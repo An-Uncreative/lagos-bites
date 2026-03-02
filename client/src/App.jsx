@@ -8,6 +8,8 @@ import Menu from "./pages/Menu.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Success from "./pages/Success.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx"
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         {/* Redirect unknown routes back to home */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
