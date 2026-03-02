@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { env } from "../config/env.js";
-import { Meal } from "../models/Meal.js";
+import { Meal } from "../models/meal.js";
 
 const meals = [
   {

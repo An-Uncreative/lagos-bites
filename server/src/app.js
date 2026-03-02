@@ -9,6 +9,7 @@ import { paymentRouter } from "./routes/payment.routes.js";
 import { notFound, errorHandler } from "./middleware/error.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { authRouter } from "./routes/auth.routes.js";
 
 export function createApp() {
   const app = express();
@@ -47,6 +48,7 @@ export function createApp() {
   app.use("/api/meals", mealsRouter);
   app.use("/api/orders", ordersRouter);
   app.use("/api/payments", paymentRouter);
+  app.use("/api/auth", authRouter);
 
   // Serve static images with proper CORS headers
   app.use(
