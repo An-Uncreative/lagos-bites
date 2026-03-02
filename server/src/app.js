@@ -10,6 +10,7 @@ import { notFound, errorHandler } from "./middleware/error.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { authRouter } from "./routes/auth.routes.js";
+import {adminRouter} from "./routes/admin.routes.js";
 
 export function createApp() {
   const app = express();
@@ -49,6 +50,7 @@ export function createApp() {
   app.use("/api/orders", ordersRouter);
   app.use("/api/payments", paymentRouter);
   app.use("/api/auth", authRouter);
+  app.use("/api/admin", adminRouter);
 
   // Serve static images with proper CORS headers
   app.use(
