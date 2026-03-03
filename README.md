@@ -35,22 +35,35 @@ lagos bites is a small restaurant rely on manual order collection through WhatsA
 Lagos Bites website provides a structured ordering system with secure online payments and server-side verification to eliminate these issues.
 
 ## Core Features
-### Customer Experience
 
+### Customer Interface
 - Browse dynamic meal listings from MongoDB
-- Add items to cart with local state persistence
-- Checkout with delivery details
-- Secure payment via Paystack inline integration
-- Payment confirmation and order success flow
+- Add items to cart with persistent local state
+- Secure checkout with Paystack payment integration
+- Server-side payment verification before marking orders as paid
 
-### Backend & Security
+### Admin Dashboard (Protected)
+- JWT-based authentication
+- Role-based access control (admin-only routes)
+- View all orders in real time
+- Filter orders by status (paid, pending, failed)
+- Search by customer, phone, reference, or order ID
+- Revenue aggregation from paid orders
+- Protected metrics endpoint
 
-- Server-side price validation (prevents client-side tampering)
-- Order creation with recalculated totals
-- Secure Paystack verification on backend
-- Idempotent payment verification logic
-- Environment-based configuration
-- CORS handling for production environments
+## Authentication & Authorization
+
+The system includes a secure admin authentication layer:
+
+- Passwords are hashed using bcrypt
+- JWT tokens issued on successful login
+- Token-based route protection middleware
+- Role-based access control for admin endpoints
+- Unauthorized access returns structured error responses
+
+Admin routes:
+- GET /api/admin/orders
+- GET /api/admin/metrics
 
 ## Architecture Decisions
 ### 1. Server-Side Price Validation
@@ -141,10 +154,12 @@ VITE_PAYSTACK_PUBLIC_KEY=
 
 ## Future Improvements
 
-- Admin dashboard for order management
-- Order status tracking (pending, preparing, delivered)
-- Sales analytics dashboard
-- Authentication for restaurant staff
-- Payment webhook enhancements
+- Order status updates (preparing, delivered)
+- Sales visualization charts
+- Refund handling workflow
+- Staff role differentiation
+- Inventory management integration
+- Webhook reliability improvements
+- update the interface for admin dashboard, and login
 
 This project demonstrates fullstack engineering principles including API design, validation, security, third-party integrations, and production deployment.
